@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using AGDDPlatformer;
 
 
-public class Projectile : MonoBehaviour
+public class Projectile2 : MonoBehaviour
 {
     public float speed = 5f;
     public float maxSpeed = 15f;
@@ -12,7 +12,6 @@ public class Projectile : MonoBehaviour
     
 
     private Rigidbody2D rb;
-    private Transform playerTransform;
     private SpriteRenderer spriteRenderer; //reference to player spriterenderer so we can copy their color for the deflect
 
 
@@ -20,32 +19,13 @@ public class Projectile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        GameObject player = GameObject.FindGameObjectWithTag("Player1");
 
-        if (player != null)
-        {
-            playerTransform = player.transform;
-            MoveTowardsPlayer();
-        }
-        else
-        {
-            Debug.LogError("Player not found: Check the player tag.");
-        }
+        rb.velocity = transform.right * speed; //the projectiel will fly whereever it's x-axis right direction is facing
     }
 
     void Update()
     {
         RotateMovementDirection();
-    }
-
-    void MoveTowardsPlayer()
-    {
-        if (playerTransform != null)
-        {
-            Vector2 direction = (playerTransform.position - transform.position).normalized;
-
-            rb.velocity = direction * speed;
-        }
     }
 
     public void Deflect(Vector2 deflectionDirection, Color color)

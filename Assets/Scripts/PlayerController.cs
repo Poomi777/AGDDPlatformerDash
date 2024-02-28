@@ -231,7 +231,7 @@ namespace AGDDPlatformer
 
         public Color GetPlayerColor()
         {
-            return spriteRenderer.color;
+            return canDashColor;
         }
 
         void OnCollisionEnter2D(Collision2D collision)

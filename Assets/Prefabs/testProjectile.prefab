@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   maxSpeed: 15
+  hasBeenDeflected: 0
 --- !u!212 &2819990741666943727
 SpriteRenderer:
   m_ObjectHideFlags: 0

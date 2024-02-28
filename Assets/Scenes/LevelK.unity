@@ -466,7 +466,7 @@ PrefabInstance:
     - target: {fileID: 8516343767001849756, guid: 830aa313c3e943a4586ab132c6aab48f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.5
+      value: 4.08
       objectReference: {fileID: 0}
     - target: {fileID: 8516343767025087188, guid: 830aa313c3e943a4586ab132c6aab48f,
         type: 3}
@@ -504,6 +504,7 @@ GameObject:
   - component: {fileID: 1044700497}
   - component: {fileID: 1044700496}
   - component: {fileID: 1044700495}
+  - component: {fileID: 1044700498}
   m_Layer: 0
   m_Name: DamageTilemap
   m_TagString: Untagged
@@ -602,7 +603,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1899,6 +1900,18 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1044700498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044700493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f27ce5c5472d84e894cf0d9852dedb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1207612003
 PrefabInstance:
   m_ObjectHideFlags: 0

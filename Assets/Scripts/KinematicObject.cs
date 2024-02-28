@@ -14,6 +14,7 @@ namespace AGDDPlatformer
         public Vector2 velocity;
         public bool isGrounded;
         public bool isFrozen;
+        bool startsFrozen;
 
         protected GameObject groundedOnObject = null;
         protected Vector2 groundNormal = new Vector2(0, 1);
@@ -27,6 +28,14 @@ namespace AGDDPlatformer
 
         protected List<KinematicObject> AttatchedObjects = new List<KinematicObject>();
         protected KinematicObject AttatchedTo = null;
+
+        Vector2 startPosition;
+
+        void Awake()
+        {
+            startPosition = transform.position;
+            startsFrozen = isFrozen;
+        }
 
         protected void OnEnable()
         {
@@ -187,6 +196,12 @@ namespace AGDDPlatformer
         public KinematicObject GetAttatchedTo()
         {
             return AttatchedTo;
+        }
+
+        public void ResetObject()
+        {
+            transform.position = startPosition;
+            isFrozen = startsFrozen;
         }
     }
 }

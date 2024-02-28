@@ -11,6 +11,9 @@ namespace AGDDPlatformer
 
         [Header("Players")]
         public PlayerController[] players;
+        
+        [Header("Objects")]
+        public KinematicObject[] kinematicObjectobjects;
 
         [Header("Level")]
         public PlayerGoal[] playerGoals;
@@ -125,6 +128,11 @@ namespace AGDDPlatformer
             foreach (PlayerController player in players)
             {
                 player.ResetPlayer();
+            }
+
+            foreach (KinematicObject kinematicObjectobject in kinematicObjectobjects)
+            {
+                kinematicObjectobject.ResetObject();
             }
         }
     }

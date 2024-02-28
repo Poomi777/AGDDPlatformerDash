@@ -26,7 +26,7 @@ namespace AGDDPlatformer
             Vector2 progressToStart = StartPoint.position - transform.position;
             if (GoingTowards == Points.End)
             {
-                velocity = progressToEnd.normalized * Speed;
+                velocity = progressToEnd.normalized * Speed;                
             }
             else
             {

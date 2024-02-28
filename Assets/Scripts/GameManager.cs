@@ -44,7 +44,7 @@ namespace AGDDPlatformer
             }
         }
 
-        IEnumerator Start()
+        /* IEnumerator Start()
         {
             timeStopped = true;
 
@@ -58,7 +58,7 @@ namespace AGDDPlatformer
             startScreen.SetActive(false);
 
             timeStopped = false;
-        }
+        } */
 
         void Update()
         {
@@ -125,6 +125,7 @@ namespace AGDDPlatformer
 
         void ResetLevel()
         {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             foreach (PlayerController player in players)
             {
                 player.ResetPlayer();

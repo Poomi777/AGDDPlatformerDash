@@ -17,9 +17,10 @@ namespace AGDDPlatformer
         public float dashCooldown;
         public Color canDashColor;
         public Color cantDashColor;
+        public TrailRenderer trailRenderer;
         float lastDashTime;
         Vector2 dashDirection;
-        bool isDashing;
+        public bool isDashing;
         bool canDash;
         bool wantsToDash;
 
@@ -45,6 +46,8 @@ namespace AGDDPlatformer
         void Awake()
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            trailRenderer = GetComponentInChildren<TrailRenderer>();
+            trailRenderer.enabled = false;
 
             lastJumpTime = -jumpBufferTime * 2;
 
@@ -111,6 +114,8 @@ namespace AGDDPlatformer
             if (isDashing)
             {
                 velocity = dashDirection * dashSpeed;
+                trailRenderer.enabled = true;
+
                 if (Time.time - lastDashTime >= dashTime)
                 {
                     isDashing = false;
@@ -125,6 +130,8 @@ namespace AGDDPlatformer
             }
             else
             {
+                trailRenderer.enabled = false;
+                
                 if (isGrounded)
                 {
                     // Store grounded time to allow for late jumps
@@ -205,5 +212,37 @@ namespace AGDDPlatformer
         {
             this.jumpBoost = jumpBoost;
         }
+
+        public Vector2 CalculateDeflectionDirection(Collision2D collision)
+        {
+            // Vector2 incomingVector = -collision.relativeVelocity;
+            // Vector2 normal = collision.contacts[0].normal;
+
+            // Vector2 deflectionDirection = Vector2.Reflect(incomingVector, normal);
+
+            return dashDirection.normalized;
+        }
+
+        public void Die()
+        {
+            Debug.Log("Player has died!");
+            Destroy(gameObject);
+        }
+
+        public Color GetPlayerColor()
+        {
+            return canDashColor;
+        }
+
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (isDashing && collision.gameObject.CompareTag("Projectile"))
+            {
+                Vector2 deflectionDirection = CalculateDeflectionDirection(collision);
+                Color playerColor = spriteRenderer.color;
+                collision.gameObject.GetComponent<Projectile>().Deflect(deflectionDirection, canDashColor);
+            }
+        }
+
     }
 }

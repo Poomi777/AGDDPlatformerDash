@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     public float speed = 5f;
     public float maxSpeed = 15f;
     public bool hasBeenDeflected = false;
+    public bool isStraightMovingProjectile = false;
     
 
     private Rigidbody2D rb;
@@ -20,16 +21,26 @@ public class Projectile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        GameObject player = GameObject.FindGameObjectWithTag("Player1");
+        //GameObject player = GameObject.FindGameObjectWithTag("Player1");
 
-        if (player != null)
+        if (isStraightMovingProjectile)
         {
-            playerTransform = player.transform;
-            MoveTowardsPlayer();
+            rb.velocity = transform.right * speed;
         }
+
         else
         {
-            Debug.LogError("Player not found: Check the player tag.");
+            GameObject player = GameObject.FindGameObjectWithTag("Player1");
+            if (player != null)
+            {
+                playerTransform = player.transform;
+                MoveTowardsPlayer();
+            }
+
+            else
+            {
+                Debug.LogError("Player not found: Check the player tag.");
+            }
         }
     }
 
@@ -40,7 +51,7 @@ public class Projectile : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
-        if (playerTransform != null)
+        if (!isStraightMovingProjectile && playerTransform != null)
         {
             Vector2 direction = (playerTransform.position - transform.position).normalized;
 
@@ -81,7 +92,8 @@ public class Projectile : MonoBehaviour
 
             else if (!hasBeenDeflected)
             {
-                playerController?.Die();
+                
+                GameManager.instance.ResetLevel();
                 Destroy(gameObject);
             }
         }

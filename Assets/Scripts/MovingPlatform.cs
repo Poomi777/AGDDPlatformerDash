@@ -11,35 +11,45 @@ namespace AGDDPlatformer
         public Transform StartPoint;
         public Transform EndPoint;
 
-        enum Points
+        protected enum Points
         {
             Start, End
         }
 
-        private Points GoingTowards = Points.End;
+        protected Points GoingTowards = Points.End;
+        protected Vector2 startToEnd;
+        protected Vector2 progressToEnd;
+        protected Vector2 progressToStart;
+        
 
-        void Update()
+        protected virtual void Update()
         {
+            if (!isFrozen)
+            {
+
             //Move the platform back and forth between the start and end points
             Vector2 startToEnd = EndPoint.position - StartPoint.position;
             Vector2 progressToEnd = EndPoint.position - transform.position;
             Vector2 progressToStart = StartPoint.position - transform.position;
-            if (GoingTowards == Points.End)
-            {
-                velocity = progressToEnd.normalized * Speed;
-            }
-            else
-            {
-                velocity = progressToStart.normalized * Speed;
-            }
+            
 
-            if (GoingTowards == Points.End && Vector2.Dot(progressToEnd, startToEnd) <= 0)
-            {
-                GoingTowards = Points.Start;
-            }
-            else if (GoingTowards == Points.Start && Vector2.Dot(progressToStart, -startToEnd) <= 0)
-            {
-                GoingTowards = Points.End;
+                if (GoingTowards == Points.End)
+                {
+                    velocity = progressToEnd.normalized * Speed;
+                }
+                else
+                {
+                    velocity = progressToStart.normalized * Speed;
+                }
+
+                if (GoingTowards == Points.End && Vector2.Dot(progressToEnd, startToEnd) <= 0)
+                {
+                    GoingTowards = Points.Start;
+                }
+                else if (GoingTowards == Points.Start && Vector2.Dot(progressToStart, -startToEnd) <= 0)
+                {
+                    GoingTowards = Points.End;
+                }
             }
         }
 
@@ -73,5 +83,11 @@ namespace AGDDPlatformer
             if (!isFrozen)
             otherBody.GetComponent<PlayerController>()?.SetJumpBoost(new Vector2(velocity.x, 0));
         }
+
+        public void StartMoving()
+        {
+            isFrozen = false;
+        }
+
     }
 }

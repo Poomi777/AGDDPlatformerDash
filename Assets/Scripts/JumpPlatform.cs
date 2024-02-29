@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpPlatform : MonoBehaviour
+public class JumpPlatform : KinematicObject
 {
     [SerializeField] private float jumpSpeed = 10.0f;
 
@@ -19,7 +19,7 @@ public class JumpPlatform : MonoBehaviour
         
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnCollisionStay2D(Collision2D other)
     {
         
         PlayerController playerController = other.gameObject.GetComponent<PlayerController>();

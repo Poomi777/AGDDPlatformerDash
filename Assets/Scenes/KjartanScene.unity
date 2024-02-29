@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 874586886}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Damager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -584,7 +584,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.027255535}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -595,7 +595,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.36264038, y: 0.97064793}
   m_EdgeRadius: 0
 --- !u!1 &1271495225
 GameObject:
@@ -692,6 +692,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovingPlatform
       objectReference: {fileID: 0}
+    - target: {fileID: 8516343766262609506, guid: 830aa313c3e943a4586ab132c6aab48f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8516343767025087188, guid: 830aa313c3e943a4586ab132c6aab48f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -770,7 +775,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -798,7 +803,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70267fb06b03645419bd3a515468d865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 10
+  minGroundNormalY: 0.65
+  gravityModifier: 1
+  velocity: {x: 0, y: 0}
+  isGrounded: 0
+  isFrozen: 0
+  jumpSpeed: 40
 --- !u!50 &1502289968
 Rigidbody2D:
   serializedVersion: 4
@@ -1216,7 +1226,7 @@ PrefabInstance:
     - target: {fileID: 4691332086608218244, guid: 1d096467bd11505479937aff780e5cd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.376152
+      value: 11.370815
       objectReference: {fileID: 0}
     - target: {fileID: 4691332086608218244, guid: 1d096467bd11505479937aff780e5cd2,
         type: 3}

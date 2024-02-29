@@ -53,10 +53,6 @@ public class EnemyController : KinematicObject
     private void OnCollisionStay2D(Collision2D collision)
     {
         
-        PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
-
-        if (playerController == null) { return; }
-
-        playerController.ResetPlayer();
+        
     }
 }

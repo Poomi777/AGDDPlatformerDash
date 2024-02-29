@@ -121,15 +121,6 @@ namespace AGDDPlatformer
         public void ResetLevel()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            foreach (PlayerController player in players)
-            {
-                player.ResetPlayer();
-            }
-
-            foreach (KinematicObject kinematicObjectobject in kinematicObjectobjects)
-            {
-                kinematicObjectobject.ResetObject();
-            }
         }
     }
 }

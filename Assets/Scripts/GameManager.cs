@@ -44,21 +44,12 @@ namespace AGDDPlatformer
             }
         }
 
-        /* IEnumerator Start()
+        void Start()
         {
-            timeStopped = true;
-
             endScreen.SetActive(false);
             gameOverScreen.SetActive(false);
-
-            startScreen.SetActive(true);
-
-            yield return new WaitForSeconds(startScreenTime);
-
             startScreen.SetActive(false);
-
-            timeStopped = false;
-        } */
+        }
 
         void Update()
         {

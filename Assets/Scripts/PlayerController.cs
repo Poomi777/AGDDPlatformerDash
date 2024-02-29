@@ -242,6 +242,10 @@ namespace AGDDPlatformer
                 Color playerColor = spriteRenderer.color;
                 collision.gameObject.GetComponent<Projectile>().Deflect(deflectionDirection, canDashColor);
             }
+            else if (collision.gameObject.CompareTag("Damager"))
+            {
+                GameManager.instance.ResetLevel();
+            }
         }
 
     }

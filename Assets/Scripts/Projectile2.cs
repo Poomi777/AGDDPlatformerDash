@@ -4,6 +4,23 @@ using System.Collections.Generic;
 using AGDDPlatformer;
 
 
+
+// THIS FILE IS NOW REDUNDANT, ALL FUNCTIONALITY HAS BEEN MOVED TO PROJECTILE.CS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public class Projectile2 : MonoBehaviour
 {
     public float speed = 5f;

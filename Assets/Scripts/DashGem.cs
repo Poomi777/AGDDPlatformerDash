@@ -7,6 +7,8 @@ namespace AGDDPlatformer
         public GameObject activeIndicator;
         public float cooldown = 2;
         public AudioSource source;
+        public bool isDeflectGem;
+        public MovingPlatform controlledPlatform;
         float lastCollected;
         bool isActive;
 
@@ -29,14 +31,38 @@ namespace AGDDPlatformer
             if (!isActive)
                 return;
 
-            PlayerController playerController = other.GetComponentInParent<PlayerController>();
-            if (playerController != null)
+            //DeflectGem logics
+            if (isDeflectGem && other.CompareTag("Projectile"))
             {
-                playerController.ResetDash();
-                isActive = false;
-                lastCollected = Time.time;
-                activeIndicator.SetActive(false);
-                source.Play();
+                //Projectile projectile = other.GetComponent<Projectile>();
+
+                    if (controlledPlatform != null)
+                    {
+                        controlledPlatform.isFrozen = !controlledPlatform.isFrozen;
+                        if (!controlledPlatform.isFrozen)
+                        {
+                            isActive = false;
+                            lastCollected = Time.time;
+                            activeIndicator.SetActive(false);
+                            source.Play();
+
+                        }
+                    }
+                    Destroy(other.gameObject);
+                
+            }
+
+            else if (!isDeflectGem && other.CompareTag("Player1")) //regular DashGem logic
+            {
+                PlayerController playerController = other.GetComponentInParent<PlayerController>();
+                if (playerController != null)
+                {
+                    playerController.ResetDash();
+                    isActive = false;
+                    lastCollected = Time.time;
+                    activeIndicator.SetActive(false);
+                    source.Play();
+                }
             }
         }
     }

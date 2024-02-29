@@ -11,14 +11,18 @@ namespace AGDDPlatformer
         public Transform StartPoint;
         public Transform EndPoint;
 
-        enum Points
+        protected enum Points
         {
             Start, End
         }
 
-        private Points GoingTowards = Points.End;
+        protected Points GoingTowards = Points.End;
+        protected Vector2 startToEnd;
+        protected Vector2 progressToEnd;
+        protected Vector2 progressToStart;
+        
 
-        void Update()
+        protected virtual void Update()
         {
             //Move the platform back and forth between the start and end points
             Vector2 startToEnd = EndPoint.position - StartPoint.position;
@@ -73,5 +77,11 @@ namespace AGDDPlatformer
             if (!isFrozen)
             otherBody.GetComponent<PlayerController>()?.SetJumpBoost(new Vector2(velocity.x, 0));
         }
+
+        public void StartMoving()
+        {
+            isFrozen = false;
+        }
+
     }
 }

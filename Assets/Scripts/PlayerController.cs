@@ -45,6 +45,8 @@ namespace AGDDPlatformer
 
         Vector2 jumpPadBoost;
         bool isJumpPadBoosting;
+        bool isJumpPadReleased;
+        
 
         void Awake()
         {
@@ -135,7 +137,7 @@ namespace AGDDPlatformer
             {
                 trailRenderer.enabled = false;
                 
-                if (isGrounded)
+                if (isGrounded && !isJumpPadReleased)
                 {
                     // Store grounded time to allow for late jumps
                     lastGroundedTime = Time.time;
@@ -197,6 +199,13 @@ namespace AGDDPlatformer
             {
                 velocity += jumpPadBoost;
                 isJumpPadBoosting = false;
+                isJumpPadReleased = true;
+                source.PlayOneShot(jumpSound);
+            }
+            if (isJumpPadReleased && isGrounded)
+            {
+                isJumpPadReleased = false;
+                canJump = true;
             }
 
             spriteRenderer.color = canDash ? canDashColor : cantDashColor;
@@ -234,19 +243,17 @@ namespace AGDDPlatformer
         }
         public void SetJumpPadBoost(Vector2 jumpBoost)
         {
-            // Vector2 incomingVector = -collision.relativeVelocity;
-            // Vector2 normal = collision.contacts[0].normal;
-            
-            // Vector2 deflectionDirection = Vector2.Reflect(incomingVector, normal);
-            if (velocity.y > 0.0f)
+            if (isGrounded && canJump)
             {
                 this.jumpPadBoost = jumpBoost;
                 isJumpPadBoosting = true;
+                canJump = false;
+                isGrounded = false;
 
             }
 
 
-            
+
         }
 
         public void Die()

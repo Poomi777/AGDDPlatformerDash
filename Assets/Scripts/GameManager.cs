@@ -11,7 +11,7 @@ namespace AGDDPlatformer
 
         [Header("Players")]
         public PlayerController[] players;
-        
+
         [Header("Objects")]
         public KinematicObject[] kinematicObjectobjects;
 
@@ -46,9 +46,13 @@ namespace AGDDPlatformer
 
         void Start()
         {
+            timeStopped = true;
+
             endScreen.SetActive(false);
             gameOverScreen.SetActive(false);
             startScreen.SetActive(false);
+
+            timeStopped = false;
         }
 
         void Update()

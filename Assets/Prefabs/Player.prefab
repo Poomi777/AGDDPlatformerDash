@@ -36,6 +36,7 @@ Transform:
   - {fileID: 4843451707163031748}
   - {fileID: 2709758489412262598}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5700472183686776624
 MonoBehaviour:
@@ -413,6 +414,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 486197376359691107}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5614520533760180823
 SpriteRenderer:

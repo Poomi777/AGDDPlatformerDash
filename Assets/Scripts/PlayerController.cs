@@ -43,6 +43,9 @@ namespace AGDDPlatformer
 
         Vector2 jumpBoost;
 
+        Vector2 jumpPadBoost;
+        bool isJumpPadBoosting;
+
         void Awake()
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -174,6 +177,7 @@ namespace AGDDPlatformer
                 {
                     velocity += jumpBoost;
                     jumpBoost -= jumpBoost * Mathf.Min(1f, Time.deltaTime);
+                    //Debug.Log("Jumpboost: x = " + jumpBoost.x + ", y = " + jumpBoost.y);
                 }
             }
 
@@ -187,6 +191,12 @@ namespace AGDDPlatformer
             else if (move.x < -0.01f)
             {
                 spriteRenderer.flipX = true;
+            }
+
+            if (isJumpPadBoosting)
+            {
+                velocity += jumpPadBoost;
+                isJumpPadBoosting = false;
             }
 
             spriteRenderer.color = canDash ? canDashColor : cantDashColor;
@@ -221,6 +231,22 @@ namespace AGDDPlatformer
             // Vector2 deflectionDirection = Vector2.Reflect(incomingVector, normal);
 
             return dashDirection.normalized;
+        }
+        public void SetJumpPadBoost(Vector2 jumpBoost)
+        {
+            // Vector2 incomingVector = -collision.relativeVelocity;
+            // Vector2 normal = collision.contacts[0].normal;
+            
+            // Vector2 deflectionDirection = Vector2.Reflect(incomingVector, normal);
+            if (velocity.y > 0.0f)
+            {
+                this.jumpPadBoost = jumpBoost;
+                isJumpPadBoosting = true;
+
+            }
+
+
+            
         }
 
         public void Die()

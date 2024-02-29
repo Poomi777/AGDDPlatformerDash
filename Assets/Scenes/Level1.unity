@@ -601,6 +601,7 @@ Transform:
   - {fileID: 4765671665124937723}
   - {fileID: 4765671665924690213}
   m_Father: {fileID: 0}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4765671665124937721
 GameObject:
@@ -646,6 +647,7 @@ Transform:
   m_Children:
   - {fileID: 4765671665274536129}
   m_Father: {fileID: 4765671664299627036}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4765671665274536128
 GameObject:
@@ -680,6 +682,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4765671665124937723}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &4765671665274536130
 TilemapCollider2D:
@@ -132891,6 +132894,7 @@ Transform:
   m_Children:
   - {fileID: 231364123}
   m_Father: {fileID: 4765671664299627036}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

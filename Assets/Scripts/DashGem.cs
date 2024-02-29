@@ -35,20 +35,36 @@ namespace AGDDPlatformer
             if (isDeflectGem && other.CompareTag("Projectile"))
             {
                 //Projectile projectile = other.GetComponent<Projectile>();
+                DoorPlatform doorPlatform = controlledPlatform as DoorPlatform;
 
-                    if (controlledPlatform != null)
-                    {
-                        controlledPlatform.isFrozen = !controlledPlatform.isFrozen;
-                        if (!controlledPlatform.isFrozen)
-                        {
-                            isActive = false;
-                            lastCollected = Time.time;
-                            activeIndicator.SetActive(false);
-                            source.Play();
+                if (doorPlatform != null)
+                {
+                    doorPlatform.ActivatePlatform();
+                }
+                else
+                {
+                    controlledPlatform.isFrozen = !controlledPlatform.isFrozen;
+                }
 
-                        }
-                    }
-                    Destroy(other.gameObject);
+                // if (controlledPlatform != null)
+                // {
+                //     controlledPlatform.isFrozen = !controlledPlatform.isFrozen;
+                //     if (!controlledPlatform.isFrozen)
+                //     {
+                //         isActive = false;
+                //         lastCollected = Time.time;
+                //         activeIndicator.SetActive(false);
+                //         source.Play();
+
+                //     }
+                // }
+
+                isActive = false;
+                lastCollected = Time.time;
+                activeIndicator.SetActive(false);
+                source.Play();
+
+                Destroy(other.gameObject);
                 
             }
 

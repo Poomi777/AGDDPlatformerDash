@@ -1633,8 +1633,8 @@ GameObject:
   m_Component:
   - component: {fileID: 935874947}
   - component: {fileID: 935874950}
-  - component: {fileID: 935874949}
   - component: {fileID: 935874948}
+  - component: {fileID: 935874949}
   m_Layer: 0
   m_Name: Platform (2)
   m_TagString: Untagged
@@ -1674,7 +1674,7 @@ MonoBehaviour:
   gravityModifier: 0
   velocity: {x: 0, y: 0}
   isGrounded: 0
-  isFrozen: 1
+  isFrozen: 0
   Speed: 7
   StartPoint: {fileID: 666594921}
   EndPoint: {fileID: 83518323}
@@ -1896,7 +1896,7 @@ PrefabInstance:
     - target: {fileID: 4691332086608218244, guid: 1d096467bd11505479937aff780e5cd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.008884
+      value: 26.504318
       objectReference: {fileID: 0}
     - target: {fileID: 4691332086608218244, guid: 1d096467bd11505479937aff780e5cd2,
         type: 3}

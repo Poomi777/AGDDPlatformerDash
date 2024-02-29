@@ -26,7 +26,7 @@ namespace AGDDPlatformer
             Vector2 progressToStart = StartPoint.position - transform.position;
             if (GoingTowards == Points.End)
             {
-                velocity = progressToEnd.normalized * Speed;                
+                velocity = progressToEnd.normalized * Speed;
             }
             else
             {
@@ -71,7 +71,7 @@ namespace AGDDPlatformer
             otherBody.Detatch();
             //If it is a player, give them a small boost to simulate inertia.
             if (!isFrozen)
-                otherBody.GetComponent<PlayerController>()?.SetJumpBoost(new Vector2(velocity.x, 0));
+            otherBody.GetComponent<PlayerController>()?.SetJumpBoost(new Vector2(velocity.x, 0));
         }
     }
 }

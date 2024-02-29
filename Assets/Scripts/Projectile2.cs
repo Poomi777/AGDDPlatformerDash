@@ -61,7 +61,7 @@ public class Projectile2 : MonoBehaviour
 
             else if (!hasBeenDeflected)
             {
-                playerController?.Die();
+                GameManager.instance.ResetLevel();
                 Destroy(gameObject);
             }
         }

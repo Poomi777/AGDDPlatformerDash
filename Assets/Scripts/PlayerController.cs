@@ -218,8 +218,16 @@ namespace AGDDPlatformer
 
         public void SetJumpPadBoost(Vector2 jumpBoost)
         {
-            this.jumpPadBoost = jumpBoost;
-            isJumpPadBoosting = true;
+            
+            if (velocity.y > 0.0f)
+            {
+                this.jumpPadBoost = jumpBoost;
+                isJumpPadBoosting = true;
+
+            }
+
+
+            
         }
     }
 }

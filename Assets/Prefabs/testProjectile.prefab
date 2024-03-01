@@ -47,9 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f219d8403db8514dbd0eccd77dfe5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 15
   maxSpeed: 15
   hasBeenDeflected: 0
+  isStraightMovingProjectile: 0
 --- !u!212 &2819990741666943727
 SpriteRenderer:
   m_ObjectHideFlags: 0

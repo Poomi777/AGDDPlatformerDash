@@ -6,20 +6,34 @@ public class ProjectileSpawner : MonoBehaviour
 {
     public GameObject projectilePrefab;
     public float spawnRate = 2f;
+    public float initialDelay = 3f;
     public bool isStraightMovingProjectile = true;
     public Transform spawnPoint;
     public Transform aimPoint;
 
 
     private float lastSpawnTime = 0f;
+    private bool canShoot = false;
 
+    
+    void Start()
+    {
+        StartCoroutine(DelayStartShoot(initialDelay));
+    }
+    
     void Update()
     {
-        if (Time.time - lastSpawnTime >= spawnRate)
+        if (canShoot && Time.time - lastSpawnTime >= spawnRate)
         {
             SpawnProjectile();
             lastSpawnTime = Time.time;
         }
+    }
+
+    IEnumerator DelayStartShoot(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canShoot = true; // Enable spawning after the delay
     }
 
     void SpawnProjectile()

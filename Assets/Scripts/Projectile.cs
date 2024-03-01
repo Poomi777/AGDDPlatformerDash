@@ -84,6 +84,11 @@ public class Projectile : MonoBehaviour
         {
             PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
 
+            // if (hasBeenDeflected)
+            // {
+            //     Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+            // }
+
             if (playerController != null && playerController.isDashing)
             {
                 Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);

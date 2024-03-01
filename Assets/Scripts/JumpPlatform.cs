@@ -21,7 +21,11 @@ public class JumpPlatform : KinematicObject
 
     void OnCollisionStay2D(Collision2D other)
     {
-        
+        if (other.gameObject.transform.position.y  < 
+            gameObject.transform.position.y + gameObject.transform.localScale.y / 2.0f)
+        { 
+            return;
+        }
         PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
 
         if (playerController == null) { return; }

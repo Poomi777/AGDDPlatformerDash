@@ -79,7 +79,11 @@ namespace AGDDPlatformer
                 }
                 else
                 {
-                    controlledPlatform.isFrozen = !controlledPlatform.isFrozen;
+                    if (controlledPlatform != null)
+                    {
+                        controlledPlatform.isFrozen = !controlledPlatform.isFrozen;
+
+                    }
                 }
                 
                 if (playerController != null)

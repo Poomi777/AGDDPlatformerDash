@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  maxSpeed: 15
+  maxSpeed: 25
   hasBeenDeflected: 0
   isStraightMovingProjectile: 0
 --- !u!212 &2819990741666943727

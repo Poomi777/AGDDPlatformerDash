@@ -55,4 +55,16 @@ public class EnemyController : KinematicObject
         
         
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+            if (projectile != null && projectile.hasBeenDeflected)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
 }

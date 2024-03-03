@@ -10,6 +10,9 @@ public class Projectile : MonoBehaviour
     public float maxSpeed = 15f;
     public bool hasBeenDeflected = false;
     public bool isStraightMovingProjectile = false;
+
+    public GameObject deflectionEffectPrefab;
+    public AudioClip deflectionSound;
     
 
     private Rigidbody2D rb;
@@ -66,6 +69,16 @@ public class Projectile : MonoBehaviour
         rb.velocity = deflectionDirection.normalized * speed;
         spriteRenderer.color = color;
         RotateMovementDirection();
+
+        if(deflectionEffectPrefab != null)
+        {
+            Instantiate(deflectionEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        if(deflectionSound != null)
+        {
+            AudioSource.PlayClipAtPoint(deflectionSound, transform.position);
+        }
     }
 
     private void RotateMovementDirection()

@@ -93,10 +93,16 @@ public class Projectile : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+        
+        if (collision.gameObject.CompareTag("Deflector"))
+        {
+            Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);
+            Deflect(deflectionDirection, playerController.GetPlayerColor());
+        }
+
         if (collision.gameObject.CompareTag("Player1"))
         {
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
-
             // if (hasBeenDeflected)
             // {
             //     Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
@@ -115,6 +121,7 @@ public class Projectile : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
         else
         {
             Destroy(gameObject);

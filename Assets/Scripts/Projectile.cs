@@ -10,6 +10,9 @@ public class Projectile : MonoBehaviour
     public float maxSpeed = 15f;
     public bool hasBeenDeflected = false;
     public bool isStraightMovingProjectile = false;
+
+    public GameObject deflectionEffectPrefab;
+    public AudioClip deflectionSound;
     
 
     private Rigidbody2D rb;
@@ -66,6 +69,16 @@ public class Projectile : MonoBehaviour
         rb.velocity = deflectionDirection.normalized * speed;
         spriteRenderer.color = color;
         RotateMovementDirection();
+
+        if(deflectionEffectPrefab != null)
+        {
+            Instantiate(deflectionEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        if(deflectionSound != null)
+        {
+            AudioSource.PlayClipAtPoint(deflectionSound, transform.position);
+        }
     }
 
     private void RotateMovementDirection()
@@ -80,10 +93,16 @@ public class Projectile : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+        
+        if (collision.gameObject.CompareTag("Deflector"))
+        {
+            Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);
+            Deflect(deflectionDirection, playerController.GetPlayerColor());
+        }
+
         if (collision.gameObject.CompareTag("Player1"))
         {
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
-
             // if (hasBeenDeflected)
             // {
             //     Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
@@ -102,6 +121,7 @@ public class Projectile : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
         else
         {
             Destroy(gameObject);

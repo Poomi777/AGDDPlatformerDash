@@ -46,6 +46,12 @@ namespace AGDDPlatformer
         Vector2 jumpPadBoost;
         bool isJumpPadBoosting;
         bool isJumpPadReleased;
+
+
+        [Header("Effects")]
+        public GameObject dashEffect;
+        public float dashEffectDuration = 0.5f;
+        public float dashOffsetDistance = 0.3f;
         
 
         void Awake()
@@ -111,6 +117,27 @@ namespace AGDDPlatformer
                 lastDashTime = Time.time;
                 canDash = false;
                 gravityModifier = 0;
+
+                Vector3 effectOffset = new Vector3(dashDirection.x, dashDirection.y, 0) * dashOffsetDistance;
+
+                if (dashDirection.x != 0 && dashDirection.y == 0) //side dashing
+                {
+                    effectOffset += new Vector3(0, 0.5f, 0); //adjust the y value as needed
+                }
+                else if (dashDirection.y > 0) //dashing upwards
+                {
+                    effectOffset += new Vector3(0, 0.8f, 0); //adjust the y value as needed
+                }
+                else if (dashDirection.y < 0) //dashing downwards
+                {
+                    effectOffset += new Vector3(0, -0.1f, 0); //adjust the y value as needed
+                }
+
+                dashEffect.SetActive(true);
+                dashEffect.transform.localPosition = effectOffset;; //how far the effect should appear from the center of the player
+                dashEffect.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(dashDirection.y, dashDirection.x) * Mathf.Rad2Deg);
+                
+                Invoke("DeactivateDashEffect", dashEffectDuration);
 
                 source.PlayOneShot(dashSound);
             }
@@ -279,6 +306,11 @@ namespace AGDDPlatformer
             {
                 GameManager.instance.ResetLevel();
             }
+        }
+
+        private void DeactivateDashEffect()
+        {
+            dashEffect.SetActive(false);
         }
 
     }

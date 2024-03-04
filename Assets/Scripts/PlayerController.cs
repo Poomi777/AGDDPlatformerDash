@@ -228,6 +228,7 @@ namespace AGDDPlatformer
                 isJumpPadBoosting = false;
                 isJumpPadReleased = true;
                 source.PlayOneShot(jumpSound);
+                canDash = true;
             }
             if (isJumpPadReleased && isGrounded)
             {
@@ -270,17 +271,10 @@ namespace AGDDPlatformer
         }
         public void SetJumpPadBoost(Vector2 jumpBoost)
         {
-            if (isGrounded && canJump)
-            {
-                this.jumpPadBoost = jumpBoost;
-                isJumpPadBoosting = true;
-                canJump = false;
-                isGrounded = false;
-
-            }
-
-
-
+            this.jumpPadBoost = jumpBoost;
+            isJumpPadBoosting = true;
+            canJump = false;
+            isGrounded = false;
         }
 
         public void Die()

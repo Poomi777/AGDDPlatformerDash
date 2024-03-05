@@ -52,7 +52,13 @@ namespace AGDDPlatformer
         public GameObject dashEffect;
         public float dashEffectDuration = 0.5f;
         public float dashOffsetDistance = 0.3f;
-        
+
+        public GameObject deathEffect;
+        public AudioClip deathSound;
+
+        [Header("Animation")]
+        public Animator animator;
+        private bool isMoving;
 
         void Awake()
         {
@@ -236,6 +242,12 @@ namespace AGDDPlatformer
             }
 
             spriteRenderer.color = canDash ? canDashColor : cantDashColor;
+
+            isMoving = Mathf.Abs(move.x) > 0.01f;
+            animator.SetBool("IsMoving", isMoving);
+
+            animator.SetBool("IsDashing", isDashing);
+
         }
 
         public void ResetPlayer()
@@ -286,6 +298,16 @@ namespace AGDDPlatformer
         public void Die()
         {
             Debug.Log("Player has died!");
+            if (deathEffect != null)
+            {
+                Instantiate(deathEffect, transform.position, Quaternion.identity);
+            }
+
+            if (deathSound != null)
+            {
+                AudioSource.PlayClipAtPoint(deathSound, transform.position);
+            }
+
             Destroy(gameObject);
         }
 

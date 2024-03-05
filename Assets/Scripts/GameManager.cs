@@ -120,6 +120,17 @@ namespace AGDDPlatformer
 
         public void ResetLevel()
         {
+            foreach (var player in players)
+            {
+                player.Die();
+            }
+            StartCoroutine(ResetLevelAfterDelay(1f));
+        }
+
+        private IEnumerator ResetLevelAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }

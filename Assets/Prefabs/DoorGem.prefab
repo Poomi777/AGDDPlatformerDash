@@ -338,7 +338,7 @@ MonoBehaviour:
   activeIndicator: {fileID: 3152861807044851610}
   cooldown: 2
   source: {fileID: 7658762826645131517}
-  isDeflectGem: 1
+  isDeflectGem: 0
   controlledPlatform: {fileID: 0}
 --- !u!61 &8935016048671155320
 BoxCollider2D:
@@ -506,13 +506,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3152861807044851610}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2966, y: 0.2966, z: 0.2966}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2535273881115625225}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45.012}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!212 &4193895502301885510
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -554,7 +554,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 02fc4f2c507af184e9b25ed051736803, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3f5a4da7d6658c144acdb68c5fc1e992, type: 3}
   m_Color: {r: 0.13725491, g: 0.8784314, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0

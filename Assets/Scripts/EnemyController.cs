@@ -12,8 +12,16 @@ public class EnemyController : KinematicObject
     [SerializeField] private Transform endPoint;
 
     private bool isGointToEnd = true;
-    
-   
+
+    private SpriteRenderer spriteRenderer;
+
+
+    void Awake()
+    {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.flipX = true;
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -36,10 +44,12 @@ public class EnemyController : KinematicObject
             if (isGointToEnd && Vector2.Dot(progressToEnd, startToEnd) <= 0)
             {
                 isGointToEnd = false;
+                spriteRenderer.flipX = false;
             }
             else if (!isGointToEnd && Vector2.Dot(progressToStart, -startToEnd) <= 0)
             {
                 isGointToEnd = true;
+                spriteRenderer.flipX = true;
             }
 
 

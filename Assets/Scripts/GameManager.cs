@@ -34,6 +34,9 @@ namespace AGDDPlatformer
         public AudioSource source;
         public AudioClip winSound;
 
+        [Header("Checkpoint")]
+        public Vector2 checkPointPosition;
+
         void Awake()
         {
             instance = this;
@@ -116,11 +119,23 @@ namespace AGDDPlatformer
         void ResetGame()
         {
             SceneManager.LoadScene(firstLevel);
+            
         }
 
         public void ResetLevel()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            foreach (PlayerController player in players)
+            {
+                player.ResetPlayer();
+            }
+        }
+
+        public void SetCheckpointPosition(Vector3 newPos)
+        {
+            checkPointPosition = newPos;
+
+
         }
     }
 }

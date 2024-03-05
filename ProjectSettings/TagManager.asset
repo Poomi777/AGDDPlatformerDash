@@ -10,6 +10,7 @@ TagManager:
   - Projectile
   - Damager
   - Deflector
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

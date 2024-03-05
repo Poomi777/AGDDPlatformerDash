@@ -64,8 +64,15 @@ namespace AGDDPlatformer
 
             startPosition = transform.position;
             startOrientation = spriteRenderer.flipX;
+            
 
             defaultGravityModifier = gravityModifier;
+        }
+
+        new void Start()
+        {
+            GameManager.instance.checkPointPosition = transform.position;
+
         }
 
         void Update()
@@ -241,7 +248,7 @@ namespace AGDDPlatformer
 
         public void ResetPlayer()
         {
-            transform.position = startPosition;
+            transform.position = GameManager.instance.checkPointPosition;
             spriteRenderer.flipX = startOrientation;
 
             lastJumpTime = -jumpBufferTime * 2;
@@ -299,6 +306,21 @@ namespace AGDDPlatformer
             else if (collision.gameObject.CompareTag("Damager"))
             {
                 GameManager.instance.ResetLevel();
+            }
+            
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Checkpoint"))
+            {
+                CheckpointController checkpointController = collision.gameObject.GetComponent<CheckpointController>();
+                if (checkpointController.checkpointIsEnabled)
+                {
+                    checkpointController.DisableCheckpoint();
+                    GameManager.instance.SetCheckpointPosition(collision.gameObject.transform.position);
+
+                }
             }
         }
 

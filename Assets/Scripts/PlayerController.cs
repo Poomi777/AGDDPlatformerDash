@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
 
 namespace AGDDPlatformer
 {
@@ -59,6 +60,8 @@ namespace AGDDPlatformer
         [Header("Animation")]
         public Animator animator;
         private bool isMoving;
+
+        public CinemachineVirtualCamera virtualCamera;
 
         void Awake()
         {
@@ -309,7 +312,10 @@ namespace AGDDPlatformer
                 AudioSource.PlayClipAtPoint(deathSound, transform.position);
             }
 
-            Destroy(gameObject);
+            //GameObject newPlayer = Instantiate(gameObject, GameManager.instance.checkPointPosition, Quaternion.identity);
+
+            spriteRenderer.enabled = false;
+            //Destroy(gameObject);
         }
 
         public Color GetPlayerColor()
@@ -349,6 +355,11 @@ namespace AGDDPlatformer
         private void DeactivateDashEffect()
         {
             dashEffect.SetActive(false);
+        }
+
+        public void RenderSprite()
+        {
+            spriteRenderer.enabled = true;
         }
 
     }

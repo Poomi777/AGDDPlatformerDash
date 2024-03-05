@@ -127,27 +127,31 @@ namespace AGDDPlatformer
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             foreach (PlayerController player in players)
             {
-                player.ResetPlayer();
+                
+                player.Die();
             }
+
+          
+            StartCoroutine(ResetLevelAfterDelay(1f));
         }
 
         public void SetCheckpointPosition(Vector3 newPos)
         {
             checkPointPosition = newPos;
 
-
-            foreach (var player in players)
-            {
-                player.Die();
-            }
-            StartCoroutine(ResetLevelAfterDelay(1f));
         }
 
         private IEnumerator ResetLevelAfterDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            foreach (PlayerController player in players)
+            {
+                player.RenderSprite();
+                player.ResetPlayer();
+            }
+
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

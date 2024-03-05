@@ -52,7 +52,13 @@ namespace AGDDPlatformer
         public GameObject dashEffect;
         public float dashEffectDuration = 0.5f;
         public float dashOffsetDistance = 0.3f;
-        
+
+        public GameObject deathEffect;
+        public AudioClip deathSound;
+
+        [Header("Animation")]
+        public Animator animator;
+        private bool isMoving;
 
         void Awake()
         {
@@ -122,15 +128,15 @@ namespace AGDDPlatformer
 
                 if (dashDirection.x != 0 && dashDirection.y == 0) //side dashing
                 {
-                    effectOffset += new Vector3(0, 0.5f, 0); //adjust the y value as needed
+                    effectOffset += new Vector3(0, 0f, 0); //adjust the y value as needed
                 }
                 else if (dashDirection.y > 0) //dashing upwards
                 {
-                    effectOffset += new Vector3(0, 0.8f, 0); //adjust the y value as needed
+                    effectOffset += new Vector3(0, 0.3f, 0); //adjust the y value as needed
                 }
                 else if (dashDirection.y < 0) //dashing downwards
                 {
-                    effectOffset += new Vector3(0, -0.1f, 0); //adjust the y value as needed
+                    effectOffset += new Vector3(0, -0.2f, 0); //adjust the y value as needed
                 }
 
                 dashEffect.SetActive(true);
@@ -237,6 +243,12 @@ namespace AGDDPlatformer
             }
 
             spriteRenderer.color = canDash ? canDashColor : cantDashColor;
+
+            isMoving = Mathf.Abs(move.x) > 0.01f;
+            animator.SetBool("isMoving", isMoving);
+
+            animator.SetBool("isDashing", isDashing);
+
         }
 
         public void ResetPlayer()
@@ -280,6 +292,16 @@ namespace AGDDPlatformer
         public void Die()
         {
             Debug.Log("Player has died!");
+            if (deathEffect != null)
+            {
+                Instantiate(deathEffect, transform.position, Quaternion.identity);
+            }
+
+            if (deathSound != null)
+            {
+                AudioSource.PlayClipAtPoint(deathSound, transform.position);
+            }
+
             Destroy(gameObject);
         }
 

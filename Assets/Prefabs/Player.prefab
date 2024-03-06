@@ -61,7 +61,7 @@ MonoBehaviour:
   maxSpeed: 7
   jumpSpeed: 16
   jumpDeceleration: 0.3
-  cayoteTime: 0.1
+  cayoteTime: 0.5
   jumpBufferTime: 0.1
   dashSpeed: 20
   dashTime: 0.15
@@ -80,6 +80,7 @@ MonoBehaviour:
     type: 3}
   deathSound: {fileID: 8300000, guid: da063489102412b47a772eb9c234cc79, type: 3}
   animator: {fileID: 9066413378328982216}
+  virtualCamera: {fileID: 0}
 --- !u!50 &3286331822413284091
 Rigidbody2D:
   serializedVersion: 4

@@ -51,6 +51,11 @@ public class Projectile : MonoBehaviour, IResettable
     void Update()
     {
         RotateMovementDirection();
+        if (setToDestroy)
+        {
+            //GameManager.instance.resettableGameObjects.Remove(this);
+            Destroy(gameObject);
+        }
     }
 
     void MoveTowardsPlayer()
@@ -154,7 +159,7 @@ public class Projectile : MonoBehaviour, IResettable
 
     public void resetGameObject()
     {
-        Destroy(gameObject);
+        setToDestroy = true;
     }
 
     public bool isDestructible()

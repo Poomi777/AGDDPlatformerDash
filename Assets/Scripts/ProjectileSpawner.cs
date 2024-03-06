@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using AGDDPlatformer;
 using UnityEngine;
 
-public class ProjectileSpawner : MonoBehaviour
+public class ProjectileSpawner : MonoBehaviour, IResettable
 {
     public GameObject projectilePrefab;
     public float spawnRate = 2f;
@@ -18,21 +19,25 @@ public class ProjectileSpawner : MonoBehaviour
     
     void Start()
     {
+        GameManager.instance.resettableGameObjects.Add(this);
         StartCoroutine(DelayStartShoot(initialDelay));
     }
     
     void Update()
     {
-        if (canShoot && Time.time - lastSpawnTime >= spawnRate)
+        if (canShoot && lastSpawnTime >= spawnRate)
         {
             SpawnProjectile();
-            lastSpawnTime = Time.time;
+            lastSpawnTime = 0f;
         }
+
+        lastSpawnTime += Time.deltaTime;
     }
 
     IEnumerator DelayStartShoot(float delay)
     {
         yield return new WaitForSeconds(delay);
+        SpawnProjectile();
         canShoot = true; // Enable spawning after the delay
     }
 
@@ -69,5 +74,16 @@ public class ProjectileSpawner : MonoBehaviour
             }
     }
 
+    public void resetGameObject()
+    {
+        canShoot = false;
+        lastSpawnTime = 0f;
+        StartCoroutine(DelayStartShoot(initialDelay));
+    }
 
+    public bool isDestructible()
+    {
+
+        return false;
+    }
 }

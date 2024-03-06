@@ -4,17 +4,24 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
-public class EnemyController : KinematicObject
+public class EnemyController : KinematicObject, IResettable
 {
 
     [SerializeField] private float speed;
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform endPoint;
 
+    private Vector3 startPos;
+
     private bool isGointToEnd = true;
 
     private SpriteRenderer spriteRenderer;
 
+    new void Start()
+    {
+        GameManager.instance.resettableGameObjects.Add(this);
+        startPos = transform.position;
+    }
 
     void Awake()
     {
@@ -76,5 +83,17 @@ public class EnemyController : KinematicObject
                 Destroy(this.gameObject);
             }
         }
+    }
+
+    public void resetGameObject()
+    {
+        gameObject.transform.position = startPos;
+        
+    }
+
+    public bool isDestructible()
+    {
+
+        return false;
     }
 }

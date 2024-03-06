@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,6 +37,8 @@ namespace AGDDPlatformer
 
         [Header("Checkpoint")]
         public Vector2 checkPointPosition;
+
+        public List<IResettable> resettableGameObjects = new List<IResettable>();
 
         void Awake()
         {
@@ -131,7 +134,22 @@ namespace AGDDPlatformer
                 player.Die();
             }
 
-          
+            /*foreach (var gameObj in resettableGameObjects)
+            {
+                gameObj.resetGameObject();
+            }*/
+
+            for (int i = 0; i < resettableGameObjects.Count; i++)
+            {
+                resettableGameObjects[i].resetGameObject();
+                if (resettableGameObjects[i].isDestructible())
+                {
+                    resettableGameObjects.RemoveAt(i);
+                }
+
+            }
+
+
             StartCoroutine(ResetLevelAfterDelay(1f));
         }
 
@@ -145,11 +163,9 @@ namespace AGDDPlatformer
         {
             yield return new WaitForSeconds(delay);
 
-            foreach (PlayerController player in players)
-            {
-                player.RenderSprite();
-                player.ResetPlayer();
-            }
+
+            
+
 
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }

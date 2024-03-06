@@ -5,11 +5,12 @@ using UnityEngine;
 
 namespace AGDDPlatformer
 {
-    public class MovingPlatform : KinematicObject
+    public class MovingPlatform : KinematicObject, IResettable
     {
         public float Speed; //Probably should be the same as player max speed
         public Transform StartPoint;
         public Transform EndPoint;
+        public Vector2 startPos;
 
         protected enum Points
         {
@@ -21,6 +22,11 @@ namespace AGDDPlatformer
         protected Vector2 progressToEnd;
         protected Vector2 progressToStart;
         
+        new void Start()
+        {
+            GameManager.instance.resettableGameObjects.Add(this);
+            startPos = transform.position;
+        }
 
         protected virtual void Update()
         {
@@ -87,6 +93,19 @@ namespace AGDDPlatformer
         public void StartMoving()
         {
             isFrozen = false;
+        }
+
+        public void resetGameObject()
+        {
+
+            gameObject.transform.position = startPos;
+            isFrozen = true;
+        }
+
+        public bool isDestructible()
+        {
+
+            return false;
         }
 
     }

@@ -2,7 +2,7 @@
 
 namespace AGDDPlatformer
 {
-    public class DashGem : MonoBehaviour
+    public class DashGem : MonoBehaviour, IResettable
     {
         public GameObject activeIndicator;
         public float cooldown = 2;
@@ -11,6 +11,11 @@ namespace AGDDPlatformer
         public MovingPlatform controlledPlatform;
         float lastCollected;
         bool isActive;
+
+        void Start()
+        {
+            GameManager.instance.resettableGameObjects.Add(this);
+        }
 
         void Awake()
         {
@@ -96,5 +101,20 @@ namespace AGDDPlatformer
                 }
             }
         }
+
+        public void resetGameObject()
+        {
+
+            activeIndicator.SetActive(true);
+            isActive = true;
+        }
+
+        public bool isDestructible()
+        {
+
+            return false;
+        }
     }
+
+    
 }

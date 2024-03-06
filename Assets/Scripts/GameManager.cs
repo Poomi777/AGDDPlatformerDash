@@ -153,7 +153,9 @@ namespace AGDDPlatformer
 
         private IEnumerator ResetLevelAfterDelay(float delay)
         {
+            timeStopped = true;
             yield return new WaitForSeconds(delay);
+            timeStopped = false;
 
             for (int i = 0; i < resettableGameObjects.Count; i++)
             {

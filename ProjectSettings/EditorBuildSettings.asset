@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/KjartanScene.unity
     guid: 8eb31055a599ac8498feabdf2f8a848d
   - enabled: 1
-    path: Assets/Scenes/PlayTestLevel100.unity
+    path: Assets/Scenes/Level3.unity
     guid: 2f32dece09ea7e34f84b9f6383dcb909
   - enabled: 1
     path: Assets/Scenes/PlayTestLevel101.unity

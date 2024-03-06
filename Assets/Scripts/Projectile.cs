@@ -65,10 +65,9 @@ public class Projectile : MonoBehaviour
     public void Deflect(Vector2 deflectionDirection, Color color)
     {
         hasBeenDeflected = true;
-        speed = Mathf.Min(speed * 1.5f, maxSpeed);
+        speed = Mathf.Min(speed * 1.8f, maxSpeed);
         rb.velocity = deflectionDirection.normalized * speed;
         spriteRenderer.color = color;
-        RotateMovementDirection();
 
         if(deflectionEffectPrefab != null)
         {
@@ -79,16 +78,16 @@ public class Projectile : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(deflectionSound, transform.position);
         }
+
+        RotateMovementDirection();
     }
 
     private void RotateMovementDirection()
     {
-        if (rb.velocity != Vector2.zero)
-        {
-            float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
 
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -120,6 +119,12 @@ public class Projectile : MonoBehaviour
                 GameManager.instance.ResetLevel();
                 Destroy(gameObject);
             }
+        }
+
+        if (hasBeenDeflected && collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
         }
 
         else

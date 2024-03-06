@@ -329,7 +329,7 @@ namespace AGDDPlatformer
             {
                 Vector2 deflectionDirection = CalculateDeflectionDirection(collision);
                 Color playerColor = spriteRenderer.color;
-                collision.gameObject.GetComponent<Projectile>().Deflect(deflectionDirection, canDashColor);
+                collision.gameObject.GetComponent<Projectile>().Deflect(deflectionDirection, playerColor);
             }
             else if (collision.gameObject.CompareTag("Damager"))
             {

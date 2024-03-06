@@ -61,12 +61,15 @@ namespace AGDDPlatformer
         public Animator animator;
         private bool isMoving;
 
+        private BoxCollider2D bCol;
+
         private bool isDead = false;
 
         void Awake()
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             trailRenderer = GetComponentInChildren<TrailRenderer>();
+            bCol = GetComponentInChildren<BoxCollider2D>();
             trailRenderer.enabled = false;
 
             lastJumpTime = -jumpBufferTime * 2;
@@ -285,13 +288,14 @@ namespace AGDDPlatformer
             transform.position = GameManager.instance.checkPointPosition;
             spriteRenderer.flipX = startOrientation;
 
-            lastJumpTime = -jumpBufferTime * 2;
+            //lastJumpTime = -jumpBufferTime * 2;
 
             velocity = Vector2.zero;
 
             spriteRenderer.enabled = true;
 
             isDead = false;
+            bCol.enabled = true;
 
         }
 
@@ -341,6 +345,7 @@ namespace AGDDPlatformer
                 //GameObject newPlayer = Instantiate(gameObject, GameManager.instance.checkPointPosition, Quaternion.identity);
 
                 spriteRenderer.enabled = false;
+                bCol.enabled = false;
             }
             
             //Destroy(gameObject);

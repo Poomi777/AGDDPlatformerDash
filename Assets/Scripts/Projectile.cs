@@ -19,7 +19,6 @@ public class Projectile : MonoBehaviour, IResettable
     private Transform playerTransform;
     private SpriteRenderer spriteRenderer; //reference to player spriterenderer so we can copy their color for the deflect
     private bool setToDestroy = false;
-    private int resettablePos;
 
     void Start()
     {
@@ -55,6 +54,7 @@ public class Projectile : MonoBehaviour, IResettable
         RotateMovementDirection();
         if (setToDestroy)
         {
+            //GameManager.instance.resettableGameObjects.Remove(this);
             Destroy(gameObject);
         }
     }
@@ -137,8 +137,7 @@ public class Projectile : MonoBehaviour, IResettable
             {
                 
                 GameManager.instance.ResetLevel();
-                GameManager.instance.resettableGameObjects.Remove(this);
-                Destroy(gameObject);
+                setToDestroy = true;
             }
         }
 
@@ -146,10 +145,17 @@ public class Projectile : MonoBehaviour, IResettable
         {
             GameManager.instance.resettableGameObjects.Remove(this);
             //Destroy(gameObject);
+            setToDestroy = true;
+            
+        }
+
+        if (collision.gameObject.CompareTag("TilemapGround"))
+        {
+            setToDestroy = true;
         }
 
         
-        Destroy(gameObject);
+        
     }
 
 

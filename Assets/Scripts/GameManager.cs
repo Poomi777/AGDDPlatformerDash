@@ -139,15 +139,7 @@ namespace AGDDPlatformer
                 gameObj.resetGameObject();
             }*/
 
-            for (int i = 0; i < resettableGameObjects.Count; i++)
-            {
-                resettableGameObjects[i].resetGameObject();
-                if (resettableGameObjects[i].isDestructible())
-                {
-                    resettableGameObjects.RemoveAt(i);
-                }
-
-            }
+            
 
 
             StartCoroutine(ResetLevelAfterDelay(1f));
@@ -163,8 +155,16 @@ namespace AGDDPlatformer
         {
             yield return new WaitForSeconds(delay);
 
+            for (int i = 0; i < resettableGameObjects.Count; i++)
+            {
+                resettableGameObjects[i].resetGameObject();
+                if (resettableGameObjects[i].isDestructible())
+                {
+                    resettableGameObjects.RemoveAt(i);
+                }
 
-            
+            }
+
 
 
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);

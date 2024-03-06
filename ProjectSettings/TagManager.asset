@@ -12,6 +12,7 @@ TagManager:
   - Deflector
   - Checkpoint
   - Enemy
+  - TilemapGround
   layers:
   - Default
   - TransparentFX

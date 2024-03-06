@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7388892803085181129}
   - component: {fileID: 8368382992076596027}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemyRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 505539664824424713}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MovingEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 2562410624813853015}
   - component: {fileID: 8579572472310963684}
   - component: {fileID: 6888149559147866355}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Damager
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2616703821117977928}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5816383691411342285}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

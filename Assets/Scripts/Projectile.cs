@@ -72,10 +72,9 @@ public class Projectile : MonoBehaviour, IResettable
     public void Deflect(Vector2 deflectionDirection, Color color)
     {
         hasBeenDeflected = true;
-        speed = Mathf.Min(speed * 1.5f, maxSpeed);
+        speed = Mathf.Min(speed * 1.8f, maxSpeed);
         rb.velocity = deflectionDirection.normalized * speed;
         spriteRenderer.color = color;
-        RotateMovementDirection();
 
         if(deflectionEffectPrefab != null)
         {
@@ -86,16 +85,17 @@ public class Projectile : MonoBehaviour, IResettable
         {
             AudioSource.PlayClipAtPoint(deflectionSound, transform.position);
         }
+
+        RotateMovementDirection();
+        gameObject.layer = LayerMask.NameToLayer("DeflectedProjectile");
     }
 
     private void RotateMovementDirection()
     {
-        if (rb.velocity != Vector2.zero)
-        {
-            float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
 
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -122,6 +122,13 @@ public class Projectile : MonoBehaviour, IResettable
             {
                 Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);
                 Deflect(deflectionDirection, playerController.GetPlayerColor());
+
+            }
+
+            if (hasBeenDeflected)
+            {
+                Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+                return;
             }
 
             else if (!hasBeenDeflected)
@@ -133,11 +140,14 @@ public class Projectile : MonoBehaviour, IResettable
             }
         }
 
-        else
+        if (hasBeenDeflected && collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             GameManager.instance.resettableGameObjects.Remove(this);
             Destroy(gameObject);
         }
+
+        
+        Destroy(gameObject);
     }
 
 

@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour, IResettable
 
     void Start()
     {
+        GameManager.instance.resettableGameObjects.Add(this);
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         //GameObject player = GameObject.FindGameObjectWithTag("Player1");
@@ -45,18 +46,11 @@ public class Projectile : MonoBehaviour, IResettable
                 Debug.LogError("Player not found: Check the player tag.");
             }
         }
-
-        GameManager.instance.resettableGameObjects.Add(this);
     }
 
     void Update()
     {
         RotateMovementDirection();
-        if (setToDestroy)
-        {
-            //GameManager.instance.resettableGameObjects.Remove(this);
-            Destroy(gameObject);
-        }
     }
 
     void MoveTowardsPlayer()
@@ -158,16 +152,13 @@ public class Projectile : MonoBehaviour, IResettable
         
     }
 
-
     public void resetGameObject()
     {
-
-        setToDestroy = true;
+        Destroy(gameObject);
     }
 
     public bool isDestructible()
     {
-
         return true;
     }
 

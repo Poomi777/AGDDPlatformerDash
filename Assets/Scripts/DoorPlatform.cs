@@ -5,50 +5,41 @@ namespace AGDDPlatformer
     public class DoorPlatform : MovingPlatform
     {
         
-        private bool activated = false;
-        private bool shouldMove = false;
-
         protected override void Update()
         {
-            if (!activated || isFrozen) 
-            {
-                return;
-            }
 
             base.Update(); 
 
-            if (shouldMove)
+            if (GoingTowards == Points.End && Vector2.Distance(transform.position, EndPoint.position) <= 0.1f)
             {
-               if (GoingTowards == Points.End && Vector2.Dot(progressToEnd, startToEnd) <= 0)
-                {
-                    
-                    StopPlatform();
-                }
-                else if (GoingTowards == Points.Start && Vector2.Dot(progressToStart, -startToEnd) <= 0)
-                {
-                    StopPlatform();
-                } 
+                StopPlatform();
+                return;
             }
+            else if (GoingTowards == Points.Start && Vector2.Distance(transform.position, StartPoint.position) <= 0.1f)
+            {
+                StopPlatform();
+                return;
+            } 
+            
         }
 
         public void ActivatePlatform()
         {
-            Debug.Log("Activating platform.");
-            activated = !activated;
+            isFrozen = false;  
             
-            if (activated)
-            {
-                 if (AtEndPoint())
-                {
-                    GoingTowards = Points.Start;
-                }
 
-                else if (AtStartPoint())
-                {
-                    GoingTowards = Points.End;
-                }
-                isFrozen = false;
+            if (AtEndPoint())
+            {
+                GoingTowards = Points.Start;
             }
+
+            else if (AtStartPoint())
+            {
+                GoingTowards = Points.End;
+            }
+            
+
+            Debug.Log($"Platform activated, moving towards {(GoingTowards == Points.Start ? "Start" : "End")} point.");
         }
 
         private void StopPlatform()
@@ -56,7 +47,7 @@ namespace AGDDPlatformer
             Debug.Log("stopping platform.");
             isFrozen = true;
             velocity = Vector2.zero; //stop platform moving
-            shouldMove = false;
+            
         }
 
         private bool AtStartPoint()

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
 
 namespace AGDDPlatformer
 {
-    public class PlayerController : KinematicObject
+    public class PlayerController : KinematicObject, IResettable
     {
         [Header("Movement")]
         public float maxSpeed = 7;
@@ -46,7 +47,21 @@ namespace AGDDPlatformer
         Vector2 jumpPadBoost;
         bool isJumpPadBoosting;
         bool isJumpPadReleased;
-        
+
+
+        [Header("Effects")]
+        public GameObject dashEffect;
+        public float dashEffectDuration = 0.5f;
+        public float dashOffsetDistance = 0.3f;
+
+        public GameObject deathEffect;
+        public AudioClip deathSound;
+
+        [Header("Animation")]
+        public Animator animator;
+        private bool isMoving;
+
+        private bool isDead = false;
 
         void Awake()
         {
@@ -58,8 +73,16 @@ namespace AGDDPlatformer
 
             startPosition = transform.position;
             startOrientation = spriteRenderer.flipX;
+            
 
             defaultGravityModifier = gravityModifier;
+        }
+
+        new void Start()
+        {
+            GameManager.instance.checkPointPosition = transform.position;
+            GameManager.instance.resettableGameObjects.Add(this);
+
         }
 
         void Update()
@@ -67,158 +90,209 @@ namespace AGDDPlatformer
             isFrozen = GameManager.instance.timeStopped;
 
             /* --- Read Input --- */
-
-            move.x = Input.GetAxisRaw("Horizontal");
-            if (gravityModifier < 0)
+            if (!isDead)
             {
-                move.x *= -1;
-            }
-
-            move.y = Input.GetAxisRaw("Vertical");
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                // Store jump time so that we can buffer the input
-                lastJumpTime = Time.time;
-            }
-
-            if (Input.GetButtonUp("Jump"))
-            {
-                jumpReleased = true;
-            }
-
-            // Clamp directional input to 8 directions for dash
-            Vector2 desiredDashDirection = new Vector2(
-                move.x == 0 ? 0 : (move.x > 0 ? 1 : -1),
-                move.y == 0 ? 0 : (move.y > 0 ? 1 : -1));
-            if (desiredDashDirection == Vector2.zero)
-            {
-                // Dash in facing direction if there is no directional input;
-                desiredDashDirection = spriteRenderer.flipX ? -Vector2.right : Vector2.right;
-            }
-            desiredDashDirection = desiredDashDirection.normalized;
-            if (Input.GetButtonDown("Dash"))
-            {
-                wantsToDash = true;
-            }
-
-            /* --- Compute Velocity --- */
-
-            if (canDash && wantsToDash)
-            {
-                isDashing = true;
-                dashDirection = desiredDashDirection;
-                lastDashTime = Time.time;
-                canDash = false;
-                gravityModifier = 0;
-
-                source.PlayOneShot(dashSound);
-            }
-            wantsToDash = false;
-
-            if (isDashing)
-            {
-                velocity = dashDirection * dashSpeed;
-                trailRenderer.enabled = true;
-
-                if (Time.time - lastDashTime >= dashTime)
+                move.x = Input.GetAxisRaw("Horizontal");
+                if (gravityModifier < 0)
                 {
-                    isDashing = false;
+                    move.x *= -1;
+                }
 
-                    gravityModifier = defaultGravityModifier;
-                    if ((gravityModifier >= 0 && velocity.y > 0) ||
-                        (gravityModifier < 0 && velocity.y < 0))
+                move.y = Input.GetAxisRaw("Vertical");
+
+                if (Input.GetButtonDown("Jump"))
+                {
+                    // Store jump time so that we can buffer the input
+                    lastJumpTime = Time.time;
+                }
+
+                if (Input.GetButtonUp("Jump"))
+                {
+                    jumpReleased = true;
+                }
+
+                // Clamp directional input to 8 directions for dash
+                Vector2 desiredDashDirection = new Vector2(
+                    move.x == 0 ? 0 : (move.x > 0 ? 1 : -1),
+                    move.y == 0 ? 0 : (move.y > 0 ? 1 : -1));
+                if (desiredDashDirection == Vector2.zero)
+                {
+                    // Dash in facing direction if there is no directional input;
+                    desiredDashDirection = spriteRenderer.flipX ? -Vector2.right : Vector2.right;
+                }
+                desiredDashDirection = desiredDashDirection.normalized;
+                if (Input.GetButtonDown("Dash"))
+                {
+                    wantsToDash = true;
+                }
+
+                /* --- Compute Velocity --- */
+
+                if (canDash && wantsToDash)
+                {
+                    isDashing = true;
+                    dashDirection = desiredDashDirection;
+                    lastDashTime = Time.time;
+                    canDash = false;
+                    gravityModifier = 0;
+
+                    Vector3 effectOffset = new Vector3(dashDirection.x, dashDirection.y, 0) * dashOffsetDistance;
+
+                    if (dashDirection.x != 0 && dashDirection.y == 0) //side dashing
                     {
-                        velocity.y *= jumpDeceleration;
+                        effectOffset += new Vector3(0, 0f, 0); //adjust the y value as needed
                     }
-                }
-            }
-            else
-            {
-                trailRenderer.enabled = false;
-                
-                if (isGrounded && !isJumpPadReleased)
-                {
-                    // Store grounded time to allow for late jumps
-                    lastGroundedTime = Time.time;
-                    canJump = true;
-                    if (!isDashing && Time.time - lastDashTime >= dashCooldown)
-                        canDash = true;
-                }
-
-                // Check time for buffered jumps and late jumps
-                float timeSinceJumpInput = Time.time - lastJumpTime;
-                float timeSinceLastGrounded = Time.time - lastGroundedTime;
-
-                if (canJump && timeSinceJumpInput <= jumpBufferTime && timeSinceLastGrounded <= cayoteTime)
-                {
-                    velocity.y = Mathf.Sign(gravityModifier) * jumpSpeed;
-                    canJump = false;
-                    isGrounded = false;
-
-                    source.PlayOneShot(jumpSound);
-                }
-                else if (jumpReleased)
-                {
-                    // Decelerate upwards velocity when jump button is released
-                    if ((gravityModifier >= 0 && velocity.y > 0) ||
-                        (gravityModifier < 0 && velocity.y < 0))
+                    else if (dashDirection.y > 0) //dashing upwards
                     {
-                        velocity.y *= jumpDeceleration;
+                        effectOffset += new Vector3(0, 0.3f, 0); //adjust the y value as needed
                     }
-                    jumpReleased = false;
+                    else if (dashDirection.y < 0) //dashing downwards
+                    {
+                        effectOffset += new Vector3(0, -0.2f, 0); //adjust the y value as needed
+                    }
+
+                    dashEffect.SetActive(true);
+                    dashEffect.transform.localPosition = effectOffset; ; //how far the effect should appear from the center of the player
+                    dashEffect.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(dashDirection.y, dashDirection.x) * Mathf.Rad2Deg);
+
+                    Invoke("DeactivateDashEffect", dashEffectDuration);
+
+                    source.PlayOneShot(dashSound);
                 }
+                wantsToDash = false;
 
-                velocity.x = move.x * maxSpeed;
-
-                if (isGrounded || (velocity + jumpBoost).magnitude < velocity.magnitude)
+                if (isDashing)
                 {
-                    jumpBoost = Vector2.zero;
+                    velocity = dashDirection * dashSpeed;
+                    trailRenderer.enabled = true;
+
+                    if (Time.time - lastDashTime >= dashTime)
+                    {
+                        isDashing = false;
+
+                        gravityModifier = defaultGravityModifier;
+                        if ((gravityModifier >= 0 && velocity.y > 0) ||
+                            (gravityModifier < 0 && velocity.y < 0))
+                        {
+                            velocity.y *= jumpDeceleration;
+                        }
+                    }
                 }
                 else
                 {
-                    velocity += jumpBoost;
-                    jumpBoost -= jumpBoost * Mathf.Min(1f, Time.deltaTime);
-                    //Debug.Log("Jumpboost: x = " + jumpBoost.x + ", y = " + jumpBoost.y);
+                    trailRenderer.enabled = false;
+
+                    if (isGrounded && !isJumpPadReleased)
+                    {
+                        // Store grounded time to allow for late jumps
+                        lastGroundedTime = Time.time;
+                        canJump = true;
+                        if (!isDashing && Time.time - lastDashTime >= dashCooldown)
+                            canDash = true;
+                    }
+
+                    // Check time for buffered jumps and late jumps
+                    float timeSinceJumpInput = Time.time - lastJumpTime;
+                    float timeSinceLastGrounded = Time.time - lastGroundedTime;
+
+                    if (canJump && timeSinceJumpInput <= jumpBufferTime && timeSinceLastGrounded <= cayoteTime)
+                    {
+                        velocity.y = Mathf.Sign(gravityModifier) * jumpSpeed;
+                        canJump = false;
+                        isGrounded = false;
+
+                        source.PlayOneShot(jumpSound);
+                    }
+                    else if (jumpReleased)
+                    {
+                        // Decelerate upwards velocity when jump button is released
+                        if ((gravityModifier >= 0 && velocity.y > 0) ||
+                            (gravityModifier < 0 && velocity.y < 0))
+                        {
+                            velocity.y *= jumpDeceleration;
+                        }
+                        jumpReleased = false;
+                    }
+
+                    velocity.x = move.x * maxSpeed;
+
+                    if (isGrounded || (velocity + jumpBoost).magnitude < velocity.magnitude)
+                    {
+                        jumpBoost = Vector2.zero;
+                    }
+                    else
+                    {
+                        velocity += jumpBoost;
+                        jumpBoost -= jumpBoost * Mathf.Min(1f, Time.deltaTime);
+                        //Debug.Log("Jumpboost: x = " + jumpBoost.x + ", y = " + jumpBoost.y);
+                    }
                 }
+
+                /* --- Adjust Sprite --- */
+
+                // Assume the sprite is facing right, flip it if moving left
+                if (move.x > 0.01f)
+                {
+                    spriteRenderer.flipX = false;
+                }
+                else if (move.x < -0.01f)
+                {
+                    spriteRenderer.flipX = true;
+                }
+
+                if (isJumpPadBoosting)
+                {
+                    velocity += jumpPadBoost;
+                    isJumpPadBoosting = false;
+                    isJumpPadReleased = true;
+                    source.PlayOneShot(jumpSound);
+                    canDash = true;
+                }
+                if (isJumpPadReleased && isGrounded)
+                {
+                    isJumpPadReleased = false;
+                    canJump = true;
+                }
+
+                spriteRenderer.color = canDash ? canDashColor : cantDashColor;
+
+                isMoving = Mathf.Abs(move.x) > 0.01f;
+                animator.SetBool("isMoving", isMoving);
+
+                animator.SetBool("isDashing", isDashing);
+            }
+            else
+            {
+                velocity = Vector2.zero;
             }
 
-            /* --- Adjust Sprite --- */
 
-            // Assume the sprite is facing right, flip it if moving left
-            if (move.x > 0.01f)
-            {
-                spriteRenderer.flipX = false;
-            }
-            else if (move.x < -0.01f)
-            {
-                spriteRenderer.flipX = true;
-            }
-
-            if (isJumpPadBoosting)
-            {
-                velocity += jumpPadBoost;
-                isJumpPadBoosting = false;
-                isJumpPadReleased = true;
-                source.PlayOneShot(jumpSound);
-            }
-            if (isJumpPadReleased && isGrounded)
-            {
-                isJumpPadReleased = false;
-                canJump = true;
-            }
-
-            spriteRenderer.color = canDash ? canDashColor : cantDashColor;
         }
 
         public void ResetPlayer()
         {
-            transform.position = startPosition;
+            transform.position = GameManager.instance.checkPointPosition;
             spriteRenderer.flipX = startOrientation;
 
             lastJumpTime = -jumpBufferTime * 2;
 
             velocity = Vector2.zero;
+            isDead = false;
+        }
+
+        public void resetGameObject()
+        {
+            transform.position = GameManager.instance.checkPointPosition;
+            spriteRenderer.flipX = startOrientation;
+
+            lastJumpTime = -jumpBufferTime * 2;
+
+            velocity = Vector2.zero;
+
+            spriteRenderer.enabled = true;
+
+            isDead = false;
+
         }
 
         public void ResetDash()
@@ -243,23 +317,34 @@ namespace AGDDPlatformer
         }
         public void SetJumpPadBoost(Vector2 jumpBoost)
         {
-            if (isGrounded && canJump)
-            {
-                this.jumpPadBoost = jumpBoost;
-                isJumpPadBoosting = true;
-                canJump = false;
-                isGrounded = false;
-
-            }
-
-
-
+            this.jumpPadBoost = jumpBoost;
+            isJumpPadBoosting = true;
+            canJump = false;
+            isGrounded = false;
         }
 
         public void Die()
         {
-            Debug.Log("Player has died!");
-            Destroy(gameObject);
+            if (!isDead)
+            {
+                Debug.Log("Player has died!");
+                if (deathEffect != null)
+                {
+                    Instantiate(deathEffect, transform.position, Quaternion.identity);
+                }
+
+                if (deathSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(deathSound, transform.position);
+                }
+
+                //GameObject newPlayer = Instantiate(gameObject, GameManager.instance.checkPointPosition, Quaternion.identity);
+
+                spriteRenderer.enabled = false;
+            }
+            
+            //Destroy(gameObject);
+            isDead = true;
         }
 
         public Color GetPlayerColor()
@@ -272,13 +357,39 @@ namespace AGDDPlatformer
             if (isDashing && collision.gameObject.CompareTag("Projectile"))
             {
                 Vector2 deflectionDirection = CalculateDeflectionDirection(collision);
-                Color playerColor = spriteRenderer.color;
+                //Color playerColor = spriteRenderer.color;
                 collision.gameObject.GetComponent<Projectile>().Deflect(deflectionDirection, canDashColor);
             }
             else if (collision.gameObject.CompareTag("Damager"))
             {
                 GameManager.instance.ResetLevel();
             }
+            
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Checkpoint"))
+            {
+                CheckpointController checkpointController = collision.gameObject.GetComponent<CheckpointController>();
+                if (checkpointController.checkpointIsEnabled)
+                {
+                    checkpointController.DisableCheckpoint();
+                    GameManager.instance.SetCheckpointPosition(collision.gameObject.transform.position);
+
+                }
+            }
+        }
+
+        private void DeactivateDashEffect()
+        {
+            dashEffect.SetActive(false);
+        }
+
+        public bool isDestructible()
+        {
+
+            return false;
         }
 
     }

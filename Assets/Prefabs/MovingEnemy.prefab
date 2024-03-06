@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7388892803085181129}
   - component: {fileID: 8368382992076596027}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemyRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,13 +93,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 505539664824424713}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MovingEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &505539664824424713
 Transform:
   m_ObjectHideFlags: 0
@@ -109,7 +109,7 @@ Transform:
   m_GameObject: {fileID: 1971054956314139864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.25, y: 0.67, z: 0}
+  m_LocalPosition: {x: 68.37, y: 27.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 2562410624813853015}
   - component: {fileID: 8579572472310963684}
   - component: {fileID: 6888149559147866355}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Damager
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 4787214790064527541}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.31, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -197,7 +197,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0}
   isGrounded: 0
   isFrozen: 0
-  speed: 7
+  speed: 5
   startPoint: {fileID: 2616703821117977928}
   endPoint: {fileID: 5816383691411342285}
 --- !u!61 &6888149559147866355
@@ -254,7 +254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2616703821117977928}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5816383691411342285}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +301,7 @@ Transform:
   m_GameObject: {fileID: 7487912003801114860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.47, y: 0, z: 0}
+  m_LocalPosition: {x: -21.16, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

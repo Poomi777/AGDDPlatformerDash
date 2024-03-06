@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,6 +34,11 @@ namespace AGDDPlatformer
         [Header("Audio")]
         public AudioSource source;
         public AudioClip winSound;
+
+        [Header("Checkpoint")]
+        public Vector2 checkPointPosition;
+
+        public List<IResettable> resettableGameObjects = new List<IResettable>();
 
         void Awake()
         {
@@ -116,11 +122,52 @@ namespace AGDDPlatformer
         void ResetGame()
         {
             SceneManager.LoadScene(firstLevel);
+            
         }
 
         public void ResetLevel()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            foreach (PlayerController player in players)
+            {
+                
+                player.Die();
+            }
+
+            /*foreach (var gameObj in resettableGameObjects)
+            {
+                gameObj.resetGameObject();
+            }*/
+
+            for (int i = 0; i < resettableGameObjects.Count; i++)
+            {
+                resettableGameObjects[i].resetGameObject();
+                if (resettableGameObjects[i].isDestructible())
+                {
+                    resettableGameObjects.RemoveAt(i);
+                }
+
+            }
+
+
+            StartCoroutine(ResetLevelAfterDelay(1f));
+        }
+
+        public void SetCheckpointPosition(Vector3 newPos)
+        {
+            checkPointPosition = newPos;
+
+        }
+
+        private IEnumerator ResetLevelAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+
+            
+
+
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

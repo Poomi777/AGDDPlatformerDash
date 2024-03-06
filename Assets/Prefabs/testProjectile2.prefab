@@ -51,6 +51,9 @@ MonoBehaviour:
   maxSpeed: 15
   hasBeenDeflected: 0
   isStraightMovingProjectile: 1
+  deflectionEffectPrefab: {fileID: 6808460344771095606, guid: f089a3e296fdf8848805850f85e2ac20,
+    type: 3}
+  deflectionSound: {fileID: 8300000, guid: 971d29034bff7474cb92c2e4c5e499b4, type: 3}
 --- !u!212 &2819990741666943727
 SpriteRenderer:
   m_ObjectHideFlags: 0

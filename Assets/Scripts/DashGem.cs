@@ -2,7 +2,7 @@
 
 namespace AGDDPlatformer
 {
-    public class DashGem : MonoBehaviour
+    public class DashGem : MonoBehaviour, IResettable
     {
         public GameObject activeIndicator;
         public float cooldown = 2;
@@ -11,6 +11,11 @@ namespace AGDDPlatformer
         public MovingPlatform controlledPlatform;
         float lastCollected;
         bool isActive;
+
+        void Start()
+        {
+            GameManager.instance.resettableGameObjects.Add(this);
+        }
 
         void Awake()
         {
@@ -28,6 +33,7 @@ namespace AGDDPlatformer
 
         void OnTriggerEnter2D(Collider2D other)
         {
+            DoorPlatform doorPlatform = controlledPlatform as DoorPlatform;
             if (!isActive)
                 return;
 
@@ -35,7 +41,7 @@ namespace AGDDPlatformer
             if (isDeflectGem && other.CompareTag("Projectile"))
             {
                 //Projectile projectile = other.GetComponent<Projectile>();
-                DoorPlatform doorPlatform = controlledPlatform as DoorPlatform;
+                
 
                 if (doorPlatform != null)
                 {
@@ -71,6 +77,20 @@ namespace AGDDPlatformer
             else if (!isDeflectGem && other.CompareTag("Player1")) //regular DashGem logic
             {
                 PlayerController playerController = other.GetComponentInParent<PlayerController>();
+                
+                if (doorPlatform != null)
+                {
+                    doorPlatform.ActivatePlatform();
+                }
+                else
+                {
+                    if (controlledPlatform != null)
+                    {
+                        controlledPlatform.isFrozen = !controlledPlatform.isFrozen;
+
+                    }
+                }
+                
                 if (playerController != null)
                 {
                     playerController.ResetDash();
@@ -81,5 +101,20 @@ namespace AGDDPlatformer
                 }
             }
         }
+
+        public void resetGameObject()
+        {
+
+            activeIndicator.SetActive(true);
+            isActive = true;
+        }
+
+        public bool isDestructible()
+        {
+
+            return false;
+        }
     }
+
+    
 }

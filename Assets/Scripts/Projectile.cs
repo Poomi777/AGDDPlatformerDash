@@ -100,23 +100,25 @@ public class Projectile : MonoBehaviour, IResettable
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        
+        PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
         if (collision.gameObject.CompareTag("Deflector"))
         {
-            Vector2 deflectionDirection = new Vector2(0.0f, 0.0f);
-            Color playerCol = new Color(52.0f, 154.0f, 64.0f);
-            //Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);
-            Deflect(deflectionDirection, playerCol);
+            // Vector2 deflectionDirection = new Vector2(0.0f, 0.0f);
+            // Color playerCol = new Color(52.0f, 154.0f, 64.0f);
+            // //Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);
+            // Deflect(deflectionDirection, playerCol);
+
+            Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);
+            Deflect(deflectionDirection, playerController.GetPlayerColor());
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>(), true);
+            return;
+
+            
         }
 
         if (collision.gameObject.CompareTag("Player1"))
         {
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
-            // if (hasBeenDeflected)
-            // {
-            //     Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
-            // }
+            
 
             if (playerController != null && playerController.isDashing)
             {
@@ -143,7 +145,7 @@ public class Projectile : MonoBehaviour, IResettable
         if (hasBeenDeflected && collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             GameManager.instance.resettableGameObjects.Remove(this);
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
 
         

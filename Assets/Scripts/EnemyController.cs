@@ -14,8 +14,10 @@ public class EnemyController : KinematicObject, IResettable
     private Vector3 startPos;
 
     private bool isGointToEnd = true;
+    private bool isWaiting = false;
 
     private SpriteRenderer spriteRenderer;
+    private BoxCollider2D bCol;
 
     new void Start()
     {
@@ -26,6 +28,7 @@ public class EnemyController : KinematicObject, IResettable
     void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        bCol = GetComponent<BoxCollider2D>();
         spriteRenderer.flipX = true;
     }
 
@@ -33,7 +36,7 @@ public class EnemyController : KinematicObject, IResettable
     // Update is called once per frame
     void Update()
     {
-        if (startPoint != null && endPoint != null)
+        if (startPoint != null && endPoint != null && !isWaiting)
         {
             //
             Vector2 startToEnd = endPoint.position - startPoint.position;
@@ -52,15 +55,18 @@ public class EnemyController : KinematicObject, IResettable
             {
                 isGointToEnd = false;
                 spriteRenderer.flipX = false;
+                isWaiting = true;
+                velocity = Vector2.zero;
+                StartCoroutine(EnemyWait(1.0f));
             }
             else if (!isGointToEnd && Vector2.Dot(progressToStart, -startToEnd) <= 0)
             {
                 isGointToEnd = true;
                 spriteRenderer.flipX = true;
+                isWaiting = true;
+                velocity = Vector2.zero;
+                StartCoroutine(EnemyWait(1.0f));
             }
-
-
-
 
         }
         
@@ -70,7 +76,7 @@ public class EnemyController : KinematicObject, IResettable
     private void OnCollisionStay2D(Collision2D collision)
     {
         
-        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -80,20 +86,37 @@ public class EnemyController : KinematicObject, IResettable
             Projectile projectile = collision.gameObject.GetComponent<Projectile>();
             if (projectile != null && projectile.hasBeenDeflected)
             {
-                Destroy(this.gameObject);
+                
+                spriteRenderer.enabled = false;
+                bCol.enabled = false;
+                gameObject.tag = "Untagged";
             }
         }
     }
 
     public void resetGameObject()
     {
-        gameObject.transform.position = startPos;
         
+        gameObject.transform.position = startPos;
+        spriteRenderer.enabled = true;
+        bCol.enabled = true;
+        gameObject.tag = "Damager";
+
     }
 
     public bool isDestructible()
     {
 
         return false;
+    }
+
+    private IEnumerator EnemyWait(float delay)
+    {
+       
+
+        yield return new WaitForSeconds(delay);
+
+        
+        isWaiting = false;
     }
 }

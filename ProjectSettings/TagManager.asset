@@ -12,6 +12,7 @@ TagManager:
   - Deflector
   - Checkpoint
   - Enemy
+  - TilemapGround
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Player
   - Projectile
   - Enemy
-  - 
+  - DeflectedProjectile
   - 
   - 
   - 

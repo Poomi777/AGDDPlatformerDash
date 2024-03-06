@@ -88,7 +88,7 @@ public class EnemyController : KinematicObject, IResettable
     public void resetGameObject()
     {
         gameObject.transform.position = startPos;
-        
+        return;
     }
 
     public bool isDestructible()

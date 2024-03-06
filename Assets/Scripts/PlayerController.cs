@@ -65,6 +65,8 @@ namespace AGDDPlatformer
 
         private bool isDead = false;
 
+        private GameObject activeDeathEffect;
+
         void Awake()
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -296,6 +298,11 @@ namespace AGDDPlatformer
 
             isDead = false;
             bCol.enabled = true;
+            if (activeDeathEffect != null)
+            {
+                Destroy(activeDeathEffect);
+
+            }
 
         }
 
@@ -334,7 +341,7 @@ namespace AGDDPlatformer
                 Debug.Log("Player has died!");
                 if (deathEffect != null)
                 {
-                    Instantiate(deathEffect, transform.position, Quaternion.identity);
+                    activeDeathEffect = Instantiate(deathEffect, transform.position, Quaternion.identity);
                 }
 
                 if (deathSound != null)

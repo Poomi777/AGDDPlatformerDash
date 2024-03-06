@@ -328,8 +328,8 @@ namespace AGDDPlatformer
             if (isDashing && collision.gameObject.CompareTag("Projectile"))
             {
                 Vector2 deflectionDirection = CalculateDeflectionDirection(collision);
-                Color playerColor = spriteRenderer.color;
-                collision.gameObject.GetComponent<Projectile>().Deflect(deflectionDirection, playerColor);
+                //Color playerColor = spriteRenderer.color;
+                collision.gameObject.GetComponent<Projectile>().Deflect(deflectionDirection, canDashColor);
             }
             else if (collision.gameObject.CompareTag("Damager"))
             {

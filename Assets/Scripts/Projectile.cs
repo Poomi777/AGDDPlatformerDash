@@ -80,6 +80,7 @@ public class Projectile : MonoBehaviour
         }
 
         RotateMovementDirection();
+        gameObject.layer = LayerMask.NameToLayer("DeflectedProjectile");
     }
 
     private void RotateMovementDirection()
@@ -111,6 +112,13 @@ public class Projectile : MonoBehaviour
             {
                 Vector2 deflectionDirection = playerController.CalculateDeflectionDirection(collision);
                 Deflect(deflectionDirection, playerController.GetPlayerColor());
+
+            }
+
+            if (hasBeenDeflected)
+            {
+                Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+                return;
             }
 
             else if (!hasBeenDeflected)
@@ -127,10 +135,8 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
 
-        else
-        {
-            Destroy(gameObject);
-        }
+        
+        Destroy(gameObject);
     }
 
 }
